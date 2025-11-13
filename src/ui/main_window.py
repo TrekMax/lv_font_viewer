@@ -7,7 +7,7 @@ from PyQt6.QtWidgets import (
     QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
     QPushButton, QLabel, QLineEdit, QTextEdit,
     QFileDialog, QSplitter, QGroupBox, QScrollArea,
-    QListWidget, QListWidgetItem, QSpinBox, QCheckBox,
+    QListWidget, QListWidgetItem, QSlider, QCheckBox,
     QTabWidget, QTableWidget, QTableWidgetItem
 )
 from PyQt6.QtCore import Qt, QSize
@@ -117,11 +117,19 @@ class MainWindow(QMainWindow):
         
         # 缩放控制
         control_layout.addWidget(QLabel("缩放:"))
-        self.spin_scale = QSpinBox()
-        self.spin_scale.setRange(1, 20)
-        self.spin_scale.setValue(4)
-        self.spin_scale.valueChanged.connect(self.on_scale_changed)
-        control_layout.addWidget(self.spin_scale)
+        self.slider_scale = QSlider(Qt.Orientation.Horizontal)
+        self.slider_scale.setRange(1, 20)
+        self.slider_scale.setValue(4)
+        self.slider_scale.setTickPosition(QSlider.TickPosition.TicksBelow)
+        self.slider_scale.setTickInterval(1)
+        self.slider_scale.setMinimumWidth(150)
+        self.slider_scale.valueChanged.connect(self.on_scale_changed)
+        control_layout.addWidget(self.slider_scale)
+        
+        # 缩放值显示
+        self.lbl_scale = QLabel("4x")
+        self.lbl_scale.setMinimumWidth(30)
+        control_layout.addWidget(self.lbl_scale)
         
         # 网格开关
         self.chk_grid = QCheckBox("显示网格")
@@ -370,6 +378,7 @@ Y 偏移: {glyph.ofs_y} px
     
     def on_scale_changed(self, value: int):
         """缩放改变"""
+        self.lbl_scale.setText(f"{value}x")
         self.glyph_renderer.set_scale(value)
     
     def on_grid_toggled(self, state):
