@@ -86,11 +86,21 @@ class FontInfo:
     underline_thickness: int = 0
     
     # 索引加速
-    unicode_to_glyph: Dict[int, GlyphInfo] = field(default_factory=dict)
+    unicode_to_glyph: Dict[int, int] = field(default_factory=dict)  # unicode -> glyph_id 映射 (用于BIN解析)
+    _unicode_to_glyph_obj: Dict[int, GlyphInfo] = field(default_factory=dict)  # unicode -> GlyphInfo 缓存
     
     def get_glyph(self, unicode_val: int) -> Optional[GlyphInfo]:
         """根据 Unicode 获取字形"""
-        return self.unicode_to_glyph.get(unicode_val)
+        # 先查缓存
+        if unicode_val in self._unicode_to_glyph_obj:
+            return self._unicode_to_glyph_obj[unicode_val]
+        
+        # 从 glyphs 列表中查找
+        for glyph in self.glyphs:
+            if glyph.unicode == unicode_val:
+                self._unicode_to_glyph_obj[unicode_val] = glyph
+                return glyph
+        return None
     
     def get_unicode_ranges(self) -> List[tuple]:
         """获取所有 Unicode 范围"""

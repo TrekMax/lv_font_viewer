@@ -222,6 +222,23 @@ class MainWindow(QMainWindow):
                 self.statusBar().showMessage("解析失败")
                 return
             
+            # 检查解析结果
+            if len(font_info.glyphs) == 0:
+                from PyQt6.QtWidgets import QMessageBox
+                msg = QMessageBox(self)
+                msg.setIcon(QMessageBox.Icon.Warning)
+                msg.setWindowTitle("解析警告")
+                msg.setText("BIN 文件解析未找到字形数据")
+                msg.setInformativeText(
+                    "BIN 格式解析器目前只是部分实现，可能无法正确解析所有文件。\n\n"
+                    "建议使用对应的 .c 文件以获得最佳兼容性。\n\n"
+                    f"请尝试加载: {os.path.splitext(file_path)[0]}.c"
+                )
+                msg.setStandardButtons(QMessageBox.StandardButton.Ok)
+                msg.exec()
+                self.statusBar().showMessage("BIN 文件解析不完整")
+                return
+            
             self.font_info = font_info
             
             # 更新UI
