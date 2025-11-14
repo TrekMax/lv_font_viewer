@@ -18,7 +18,7 @@ class GlyphRenderer(QWidget):
         super().__init__(parent)
         self.glyph: Optional[GlyphInfo] = None
         self.bpp = 4
-        self.scale = 4  # 放大倍数
+        self.scale = 10  # 放大倍数
         self.show_grid = True
         self.setMinimumSize(100, 100)
         
@@ -30,7 +30,8 @@ class GlyphRenderer(QWidget):
         
     def set_scale(self, scale: int):
         """设置放大倍数"""
-        self.scale = max(1, min(scale, 20))
+        self.scale = max(1, min(scale, 40))
+        self.updateGeometry()
         self.update()
         
     def set_show_grid(self, show: bool):

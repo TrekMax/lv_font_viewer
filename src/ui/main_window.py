@@ -118,16 +118,16 @@ class MainWindow(QMainWindow):
         # 缩放控制
         control_layout.addWidget(QLabel("缩放:"))
         self.slider_scale = QSlider(Qt.Orientation.Horizontal)
-        self.slider_scale.setRange(1, 20)
-        self.slider_scale.setValue(4)
+        self.slider_scale.setRange(1, 40)
+        self.slider_scale.setValue(10)
         self.slider_scale.setTickPosition(QSlider.TickPosition.TicksBelow)
-        self.slider_scale.setTickInterval(1)
+        self.slider_scale.setTickInterval(5)
         self.slider_scale.setMinimumWidth(150)
         self.slider_scale.valueChanged.connect(self.on_scale_changed)
         control_layout.addWidget(self.slider_scale)
         
         # 缩放值显示
-        self.lbl_scale = QLabel("4x")
+        self.lbl_scale = QLabel("10x")
         self.lbl_scale.setMinimumWidth(30)
         control_layout.addWidget(self.lbl_scale)
         

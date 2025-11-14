@@ -7,9 +7,6 @@ LVGL 字体文件查看器主程序
 import sys
 import os
 
-# 禁用 Qt 字体数据库警告
-os.environ['QT_LOGGING_RULES'] = 'qt.text.font.db=false'
-
 from PyQt6.QtWidgets import QApplication
 from src.ui import MainWindow
 
